@@ -9,19 +9,19 @@ const updateSlashCommands = async(commands) =>{
             '1091932285307195482',
         ),
         {
-            body: commands,
+            body:commands,
         },
     )
+
     console.log(result)
 }
 
 export const loadCommands = async() => {
-    const commands=[]
+    const commands = []
     const files = await fg('./src/commands/**/*.js')
-    for(const file of files){
-        const cmd = await import(file)
-        console.log(cmd.command)
+    for (const file of files){
+        const cmd = await import (file)
         commands.push(cmd.command)
     }
     await updateSlashCommands(commands)
-}
+    }
