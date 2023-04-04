@@ -3,8 +3,8 @@ import{SlashCommandBuilder} from 'discord.js'
 export const command = new SlashCommandBuilder()
 .setName('function-js')
 .setDescription('give js function information')
-export const avtion = async(interaction)=>{
-    await interaction.reply(`函式是物件的一種
+export const action = async(interaction)=>{
+    interaction.reply(`函式是物件的一種
             其主要形式:const 函式名稱 = function (參數,參數,......) {
                    return 要回傳的值;
                 }
