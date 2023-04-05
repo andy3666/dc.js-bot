@@ -18,15 +18,15 @@ const updateSlashCommands = async(commands) =>{
                 body:commands,
             },
         )
-    console.log(result)
     }
 }
 
 export const loadCommands = async() => {
-    const appstore = useAppStore
+    const appstore = useAppStore()
     const commands = []
     const actions = new Collection()//dc.js中提供的一個資料夾結構
     const files = await fg('./src/commands/**/*.js')
+
     for (const file of files){
         const cmd = await import (file)
         commands.push(cmd.command)
@@ -34,23 +34,20 @@ export const loadCommands = async() => {
     }
     await updateSlashCommands(commands)
     appstore.commandsActionMap = actions
-
-    console.log(appstore.commandsActionMap)
-    }
+}
 
 
 export const loadEvents = async() =>{
     const appstore = useAppStore()
     const client = appstore.client
-    const files = await fg('./src/events/**/*.js')
+    const files = await fg('./src/events/**/index.js')
     for (const file of files){
-        const eventFiles = await import (file)
-        if (eventFiles.event.once){
-            client.once(eventFiles.event.name,eventFiles.action)
+        const eventFile = await import (file)
+
+        if (eventFile.event.once){
+            client.once(eventFile.event.name,eventFile.action)
         }else {
-            client.on(eventFiles.event.name,eventFiles.action)
+            client.on(eventFile.event.name,eventFile.action)
         }
-        
-        
     }
 }
